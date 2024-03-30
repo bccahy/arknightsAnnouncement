@@ -17,6 +17,9 @@ for link in soup.find_all('a'):
 prefix = 'https://ak.hypergryph.com/news/20'
 new_list = [url for url in links if url.startswith(prefix)]
 
+if not os.path.exists('saved_links.txt'):
+    open('saved_links.txt', 'w').close() 
+
 # 读取已保存的链接
 saved_links = []
 if os.path.exists('saved_links.txt'):
