@@ -1,0 +1,35 @@
+name: Scrape and Send
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 每6小时运行一次
+
+jobs:
+  scrape_and_send:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+    - name: Run scraper
+      env:
+        GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}  
+        GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      run: python scraper.py
+    - name: Commit changes
+      run: |
+        git config --local user.email "$GIT_USER_EMAIL"
+        git config --local user.name "$GIT_USER_NAME"
+        git add saved_links.txt
+        git commit -m "Update saved_links.txt" || echo "No changes to commit"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
