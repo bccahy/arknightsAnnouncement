@@ -20,7 +20,7 @@ new_list = [url for url in links if url.startswith(prefix)]
 print(new_list)
 
 # 飞书机器人的 Webhook URL
-webhook_url = 'https://open.feishu.cn/open-apis/bot/v2/hook/612a16cf-3a85-4969-87fc-27c95db1d960'
+webhook_url = ""
 
 # 发送消息给飞书机器人
 def send_message_to_feishu(text):
