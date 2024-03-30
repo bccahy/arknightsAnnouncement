@@ -1,7 +1,6 @@
-import requests
 from bs4 import BeautifulSoup
 import os
-
+import requests
 url = 'https://ak.hypergryph.com'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
@@ -18,7 +17,19 @@ for link in soup.find_all('a'):
 prefix = 'https://ak.hypergryph.com/news/20'
 new_list = [url for url in links if url.startswith(prefix)]
 
-print(new_list)
+# 读取已保存的链接
+saved_links = []
+if os.path.exists('saved_links.txt'):
+    with open('saved_links.txt', 'r', encoding='utf-8') as f:
+        saved_links = [line.strip() for line in f]
+
+# 找出新增的链接  
+new_links = [link for link in new_list if link not in saved_links]
+
+# 追加新链接到文件
+with open('saved_links.txt', 'a', encoding='utf-8') as f:
+    for link in new_links:
+        f.write(link + '\n')
 
 # 飞书机器人的 Webhook URL
 webhook_url = ""
@@ -59,7 +70,7 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0'
 }
 
-for url in new_list:
+for url in new_links:
     response = requests.get(url, headers=headers)
     response.encoding = 'utf-8'
 
