@@ -21,7 +21,7 @@ jobs:
         pip install requests beautifulsoup4
     - name: Run scraper
       env:
-        GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+        GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}  
         GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
         FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
       run: |
@@ -42,8 +42,8 @@ jobs:
       run: |
         echo "User Email: $GIT_USER_EMAIL"
         echo "User Name: $GIT_USER_NAME"
-        git config --local user.email "$GIT_USER_EMAIL"
-        git config --local user.name "$GIT_USER_NAME"
+        git config --local user.email "${{ secrets.GIT_USER_EMAIL }}"
+        git config --local user.name "${{ secrets.GIT_USER_NAME }}"
         git add saved_links.txt
         git commit -m "Update saved_links.txt" || echo "No changes to commit"
 
