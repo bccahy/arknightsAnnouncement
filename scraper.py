@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import os
 
 url = 'https://ak.hypergryph.com'
 response = requests.get(url)
