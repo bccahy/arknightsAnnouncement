@@ -20,9 +20,22 @@ jobs:
         pip install requests beautifulsoup4
     - name: Run scraper
       env:
-        GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}  
+        GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
         GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
-      run: python scraper.py
+        FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+      run: |
+        python -c '
+        import os
+        
+        with open("scraper.py", "r") as file:
+            content = file.read()
+        
+        content = content.replace("webhook_url = \"\"", "webhook_url = os.environ[\"FEISHU_WEBHOOK_URL\"]")
+        
+        with open("scraper.py", "w") as file:  
+            file.write(content)
+        '
+        python scraper.py
     - name: Commit changes
       run: |
         git config --local user.email "$GIT_USER_EMAIL"
