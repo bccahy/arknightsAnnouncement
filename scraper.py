@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import os
 import requests
+print(os.getcwd())
 url = 'https://ak.hypergryph.com'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
@@ -35,7 +36,7 @@ with open('saved_links.txt', 'a', encoding='utf-8') as f:
         f.write(link + '\n')
 
 # 飞书机器人的 Webhook URL
-webhook_url = ""
+webhook_url = "https://open.feishu.cn/open-apis/bot/v2/hook/612a16cf-3a85-4969-87fc-27c95db1d960"
 
 # 发送消息给飞书机器人
 def send_message_to_feishu(text):
